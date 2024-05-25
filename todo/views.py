@@ -76,8 +76,9 @@ def view_todo(request, todo_pk):
 
 @login_required
 def current_todos(request):
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True).order_by('deadline')
     return render(request, 'todo/current_todos.html', {'todos': todos})
+
 
 
 @login_required

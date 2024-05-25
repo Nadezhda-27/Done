@@ -8,6 +8,7 @@ class Todo(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False)
+    deadline = models.DateTimeField(null=True, blank=True)  # Новое поле для срока выполнения
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

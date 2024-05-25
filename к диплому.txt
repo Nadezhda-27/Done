@@ -1,0 +1,4 @@
+python manage.py runserver (запустить сайт)
+
+
+python manage.py startapp polls (создать новую директорию (подпроект))
