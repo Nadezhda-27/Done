@@ -2,3 +2,5 @@ python manage.py runserver (запустить сайт)
 
 
 python manage.py startapp polls (создать новую директорию (подпроект))
+
+ctrl + alt + z = возврат до последнего commit (сохранение на гите)
