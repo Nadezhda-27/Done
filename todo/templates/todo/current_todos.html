@@ -3,31 +3,44 @@
 {% block content %}
     <div class="row justify-content-center mt-2">
         <div class="col-md-10">
-            {% if todos %}
-                <div class="row row-cols-auto gx-3">
-                    <div class="col offset-1">
-                        <div class="p-4"><h1>Задачи</h1></div>
-                    </div>
-                    <div class="col">
-                        <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'create_todo' %}">Добавить</a></div>
-                    </div>
-                    <div class="col">
-                        <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_todos' %}">Выполненные</a></div>
-                    </div>
+            <div class="row row-cols-auto gx-3 mb-3">
+                <div class="col offset-1">
+                    <div class="p-4"><h1>Задачи</h1></div>
                 </div>
-                <div class="list-group">
-                    {% for todo in todos %}
-                        <a href="{% url 'view_todo' todo.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center{% if todo.important %} list-group-item-danger{% endif %} mb-2">
-                            <div>
-                                <b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
-                            </div>
-                            {% if todo.deadline %}
-                                <small class="text-muted">Дедлайн: {{ todo.deadline|date:"M j Y H:i" }}</small>
-                            {% endif %}
-                        </a>
-                    {% endfor %}
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'create_todo' %}">Добавить</a></div>
                 </div>
-            {% else %}
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_todos' %}">Выполненные</a></div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <form method="GET" class="mb-3">
+                        <div class="input-group">
+                            <select name="category" class="form-select" onchange="this.form.submit()">
+                                <option value="all" {% if selected_category == 'all' %}selected{% endif %}>Все задачи</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if selected_category|add:"0" == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="list-group">
+                {% for todo in todos %}
+                    <a href="{% url 'view_todo' todo.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center{% if todo.important %} list-group-item-danger{% endif %} mb-2">
+                        <div>
+                            <b>{{ todo.title }}</b>{% if todo.memo %} - {{ todo.memo|truncatechars:30 }}{% endif %}
+                        </div>
+                        {% if todo.deadline %}
+                            <small class="text-muted">Дедлайн: {{ todo.deadline|date:"M j Y H:i" }}</small>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+            {% if not todos %}
                 <div class="text-center">
                     <br>
                     <h2>У вас нет активных задач. Отличная работа!</h2>

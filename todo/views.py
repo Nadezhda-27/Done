@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
 from .forms import TodoForm
-from .models import Todo
+from .models import Todo, Category
 from .serializers import TodoSerializer
 
 
@@ -29,8 +29,9 @@ def home(request):
 
 @login_required
 def create_todo(request):
+    categories = Category.objects.all()
     if request.method == 'GET':
-        return render(request, 'todo/create_todo.html', {'form': TodoForm()})
+        return render(request, 'todo/create_todo.html', {'form': TodoForm(), 'categories': categories})
     else:
         try:
             form = TodoForm(request.POST)
@@ -39,8 +40,7 @@ def create_todo(request):
             new_todo.save()
             return redirect('current_todos')
         except ValueError:
-            return render(request, 'todo/create_todo.html', {'form': TodoForm(), 'error': 'Bad data passed in'})
-
+            return render(request, 'todo/create_todo.html', {'form': TodoForm(), 'categories': categories, 'error': 'Bad data passed in'})
 
 @login_required
 def complete_todo(request, todo_pk):
@@ -62,23 +62,29 @@ def delete_todo(request, todo_pk):
 @login_required
 def view_todo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
+    categories = Category.objects.all()
     if request.method == 'GET':
         form = TodoForm(instance=todo)
-        return render(request, 'todo/view_todo.html', {'todo': todo, 'form': form})
+        return render(request, 'todo/view_todo.html', {'todo': todo, 'form': form, 'categories': categories})
     else:
         try:
             form = TodoForm(request.POST, instance=todo)
             form.save()
             return redirect('current_todos')
         except ValueError:
-            return render(request, 'todo/view_todo.html', {'todo': todo, 'form': form, 'error': 'Bad info'})
+            return render(request, 'todo/view_todo.html', {'todo': todo, 'form': form, 'categories': categories, 'error': 'Bad info'})
+
 
 
 @login_required
 def current_todos(request):
-    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True).order_by('deadline')
-    return render(request, 'todo/current_todos.html', {'todos': todos})
-
+    category_id = request.GET.get('category', 'all')
+    if category_id == 'all':
+        todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True).order_by('deadline')
+    else:
+        todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True, category_id=category_id).order_by('deadline')
+    categories = Category.objects.all()
+    return render(request, 'todo/current_todos.html', {'todos': todos, 'categories': categories, 'selected_category': category_id})
 
 
 @login_required
