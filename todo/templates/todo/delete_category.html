@@ -1,0 +1,15 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h2>Удалить категорию</h2>
+            <p>Вы уверены, что хотите удалить категорию "{{ category.name }}"?</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a role="button" class="btn btn-secondary" href="{% url 'manage_categories' %}">Отмена</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

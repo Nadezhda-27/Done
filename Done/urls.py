@@ -43,6 +43,11 @@ urlpatterns = [
     path('todo/<int:todo_pk>/complete', complete_todo, name='complete_todo'),
     path('todo/<int:todo_pk>/delete', delete_todo, name='delete_todo'),
     path('', home, name='home'),
+    path('categories/create/', create_category, name='create_category'),
+    path('categories/', manage_categories, name='manage_categories'),
+    path('categories/<int:category_pk>/edit/', edit_category, name='edit_category'),
+    path('categories/<int:category_pk>/delete/', delete_category, name='delete_category'),
+
     # Notes
     path('create_note/', create_note, name='create_note'),
     path('notes_list/', notes_list, name='notes_list'),
