@@ -1,0 +1,18 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <h1>Завершенные мероприятия</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="list-group">
+                {% for events in events %}
+                    <a href="{% url 'view_events' events.id %}" class="list-group-item list-group-item-action{% if events.important %} list-group-item-danger{% endif %} mb-2"><b>{{ events.title }}</b> - Completed {{ events.datecompleted|date:'M j Y H:i' }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

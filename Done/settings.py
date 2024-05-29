@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'todo',
     'notes',
     'account',
+    'events'
 ]
 
 REST_FRAMEWORK = {
