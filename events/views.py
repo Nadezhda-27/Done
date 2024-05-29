@@ -80,7 +80,6 @@ def current_events(request):
     return render(request, 'current_events.html', {'events': events})
 
 
-
 @login_required
 def completed_events(request):
     events = Events.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
