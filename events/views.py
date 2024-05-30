@@ -52,6 +52,22 @@ def complete_events(request, events_pk):
 
 
 @login_required
+def events_json(request):
+    events = Events.objects.filter(user=request.user).values('id', 'title', 'event_date', 'datecompleted', 'memo')
+    events_list = []
+    for event in events:
+        events_list.append({
+            'id': event['id'],
+            'title': event['title'],
+            'start': event['event_date'].isoformat(),
+            'end': event['event_date'].isoformat(),  # Убедимся, что конец события совпадает с началом, если нет отдельного времени окончания
+            'description': event['memo'],
+        })
+    print(events_list)
+    return JsonResponse(events_list, safe=False)
+
+
+@login_required
 def delete_events(request, events_pk):
     events = get_object_or_404(Events, pk=events_pk, user=request.user)
     if request.method == 'POST':

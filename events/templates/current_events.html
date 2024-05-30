@@ -15,13 +15,7 @@
                         <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_events' %}">Выполненные</a></div>
                     </div>
                 </div>
-                <div class="list-group">
-                    {% for events in events %}
-                        <a href="{% url 'view_events' events.id %}" class="list-group-item list-group-item-action{% if events.important %} list-group-item-danger{% endif %} mb-2">
-                            <b>{{ events.title }}</b> - {{ events.event_date|date:'M j Y H:i' }}{% if events.memo %} - {{ events.memo|truncatechars:30 }}{% endif %}
-                        </a>
-                    {% endfor %}
-                </div>
+                <div id="calendar"></div> <!-- Контейнер для календаря -->
             {% else %}
                 <div class="text-center">
                     <br>
@@ -32,4 +26,35 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: '/events_json/',  // URL для получения событий
+                eventColor: '#378006',
+                eventTimeFormat: { // Will display time in 24-hour format
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                eventDidMount: function(info) {
+                    var tooltip = new Tooltip(info.el, {
+                        title: info.event.extendedProps.description,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 {% endblock %}
