@@ -32,6 +32,8 @@ from .models import Events
 def create_events(request):
     if request.method == 'GET':
         initial_date = request.GET.get('date', None)
+        if initial_date:
+            initial_date = timezone.datetime.strptime(initial_date, '%Y-%m-%d').strftime('%Y-%m-%dT%H:%M')
         form = EventsForm(initial={'event_date': initial_date} if initial_date else {})
         return render(request, 'create_events.html', {'form': form})
     else:
@@ -102,3 +104,10 @@ def current_events(request):
 def completed_events(request):
     events = Events.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
     return render(request, 'completed_events.html', {'events': events})
+
+
+@login_required
+def events_list(request):
+    events = Events.objects.filter(user=request.user, datecompleted__isnull=True)
+    return render(request, 'events_list.html', {'events': events})
+

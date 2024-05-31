@@ -1,0 +1,29 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-2">
+        <div class="col-md-10">
+            <div class="row row-cols-auto gx-3">
+                <div class="col offset-1">
+                    <div class="p-4"><h1>Все активные задачи</h1></div>
+                </div>
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'create_events' %}">Добавить</a></div>
+                </div>
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_events' %}">Выполненные</a></div>
+                </div>
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'current_events' %}">Календарь</a></div>
+                </div>
+            </div>
+            <div class="list-group">
+                {% for events in events %}
+                    <a href="{% url 'view_events' events.id %}" class="list-group-item list-group-item-action{% if events.important %} list-group-item-danger{% endif %} mb-2">
+                        <b>{{ events.title }}</b> - {{ events.event_date|date:'M j Y H:i' }}{% if events.memo %} - {{ events.memo|truncatechars:30 }}{% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
