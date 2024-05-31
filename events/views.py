@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
@@ -51,19 +52,18 @@ def complete_events(request, events_pk):
         return redirect('current_events')
 
 
-@login_required
 def events_json(request):
-    events = Events.objects.filter(user=request.user).values('id', 'title', 'event_date', 'datecompleted', 'memo')
+    events = Events.objects.filter(user=request.user, datecompleted__isnull=True).values('id', 'title', 'event_date', 'datecompleted', 'memo')
     events_list = []
     for event in events:
         events_list.append({
             'id': event['id'],
             'title': event['title'],
             'start': event['event_date'].isoformat(),
-            'end': event['event_date'].isoformat(),  # Убедимся, что конец события совпадает с началом, если нет отдельного времени окончания
+            'end': event['event_date'].isoformat(),
             'description': event['memo'],
+            'url': reverse('view_events', args=[event['id']])  # URL для редактирования события
         })
-    print(events_list)
     return JsonResponse(events_list, safe=False)
 
 

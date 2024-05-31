@@ -15,7 +15,7 @@
                         <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_events' %}">Выполненные</a></div>
                     </div>
                 </div>
-                <div id="calendar"></div>
+                <div id="calendar"></div> <!-- Контейнер для календаря -->
             {% else %}
                 <div class="text-center">
                     <br>
@@ -27,7 +27,9 @@
         </div>
     </div>
 
+    <!-- FullCalendar CSS -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/tooltip.js@1.3.3/dist/umd/tooltip.min.js'></script>
@@ -43,6 +45,10 @@
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: false
+                },
+                eventClick: function(info) {
+                    window.location.href = info.event.url;  // Переход по URL события
+                    info.jsEvent.preventDefault();  // Предотвращение перехода по умолчанию
                 },
                 eventDidMount: function(info) {
                     var tooltip = new Tooltip(info.el, {
