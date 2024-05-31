@@ -39,8 +39,8 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                firstDay: 1,  // Начало недели с понедельника
                 events: '/events_json/',  // URL для получения событий
-                eventColor: '#378006',
                 eventTimeFormat: { // Will display time in 24-hour format
                     hour: '2-digit',
                     minute: '2-digit',
@@ -57,6 +57,11 @@
                         trigger: 'hover',
                         container: 'body'
                     });
+                },
+                dateClick: function(info) {
+                    // Переход на страницу создания мероприятия с предустановленной датой
+                    var createEventUrl = "{% url 'create_events' %}?date=" + info.dateStr;
+                    window.location.href = createEventUrl;
                 }
             });
 

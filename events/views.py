@@ -31,7 +31,9 @@ from .models import Events
 @login_required
 def create_events(request):
     if request.method == 'GET':
-        return render(request, 'create_events.html', {'form': EventsForm()})
+        initial_date = request.GET.get('date', None)
+        form = EventsForm(initial={'event_date': initial_date} if initial_date else {})
+        return render(request, 'create_events.html', {'form': form})
     else:
         try:
             form = EventsForm(request.POST)
