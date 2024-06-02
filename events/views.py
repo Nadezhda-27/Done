@@ -30,11 +30,9 @@ from .models import Events
 
 @login_required
 def create_events(request):
+    initial_date = request.GET.get('date', '')
     if request.method == 'GET':
-        initial_date = request.GET.get('date', None)
-        if initial_date:
-            initial_date = timezone.datetime.strptime(initial_date, '%Y-%m-%d').strftime('%Y-%m-%dT%H:%M')
-        form = EventsForm(initial={'event_date': initial_date} if initial_date else {})
+        form = EventsForm(initial={'event_date': initial_date})
         return render(request, 'create_events.html', {'form': form})
     else:
         try:
