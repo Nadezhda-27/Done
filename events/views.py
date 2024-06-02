@@ -42,7 +42,7 @@ def create_events(request):
             new_events.save()
             return redirect('current_events')
         except ValueError:
-            return render(request, 'create_events.html', {'form': EventsForm(), 'error': 'Bad data passed in'})
+            return render(request, 'create_events.html', {'form': form, 'error': 'Bad data passed in'})
 
 
 @login_required

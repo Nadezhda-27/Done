@@ -3,30 +3,21 @@
 {% block content %}
     <div class="row justify-content-center mt-2">
         <div class="col-md-10">
-            {% if events %}
-                <div class="row row-cols-auto gx-3">
-                    <div class="col offset-1">
-                        <div class="p-4"><h1>Мероприятия</h1></div>
-                    </div>
-                    <div class="col">
-                        <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'create_events' %}">Добавить</a></div>
-                    </div>
-                    <div class="col">
-                        <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_events' %}">Выполненные</a></div>
-                    </div>
-                    <div class="col">
-                        <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'events_list' %}">Все мероприятия</a></div>
-                    </div>
+            <div class="row row-cols-auto gx-3">
+                <div class="col offset-1">
+                    <div class="p-4"><h1>Мероприятия</h1></div>
                 </div>
-                <div id="calendar"></div> <!-- Контейнер для календаря -->
-            {% else %}
-                <div class="text-center">
-                    <br>
-                    <h2>У вас нет мероприятий!</h2>
-                    <br>
-                    <a role="button" class="btn btn-info" href="{% url 'create_events' %}">Новое мероприятие</a>
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'create_events' %}">Добавить</a></div>
                 </div>
-            {% endif %}
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'completed_events' %}">Выполненные</a></div>
+                </div>
+                <div class="col">
+                    <div class="p-4"><a role="button" class="btn btn-info btn-lg" href="{% url 'events_list' %}">Все задачи</a></div>
+                </div>
+            </div>
+            <div id="calendar"></div> <!-- Контейнер для календаря -->
         </div>
     </div>
 
