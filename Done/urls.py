@@ -64,5 +64,6 @@ urlpatterns = [
     path('events/<int:events_pk>/delete', delete_events, name='delete_events'),
     path('events_json/', events_json, name='events_json'),
     path('events/', events_list, name='events_list'),
+    path('delete_all_completed_events/', delete_all_completed_events, name='delete_all_completed_events'),
 
 ]

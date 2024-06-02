@@ -109,3 +109,9 @@ def events_list(request):
     events = Events.objects.filter(user=request.user, datecompleted__isnull=True)
     return render(request, 'events_list.html', {'events': events})
 
+
+@login_required
+def delete_all_completed_events(request):
+    if request.method == 'POST':
+        Events.objects.filter(user=request.user, datecompleted__isnull=False).delete()
+        return redirect('completed_events')
